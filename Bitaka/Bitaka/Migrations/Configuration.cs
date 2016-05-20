@@ -10,7 +10,6 @@ namespace Bitaka.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Bitaka.Models.ApplicationDbContext";
         }
 
         protected override void Seed(Bitaka.Models.ApplicationDbContext context)
