@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bitaka.Models
 {
@@ -50,6 +51,11 @@ namespace Bitaka.Models
         public string UserName { get; set; }
 
         [Required]
+        [Display(Name = "E-mail")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -59,5 +65,21 @@ namespace Bitaka.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Your Name")]
+        public string FullName { get; set; }
+
+        [Display(Name="Birth Date")]
+        [DataType(DataType.Date)]
+        
+        public DateTime BirthDate { get; set; } 
+        
+        [Display(Name="Address")]
+        [DataType(DataType.MultilineText)]
+        public string Address { get; set; }
+
+        [Display(Name="Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        public string Phone { get; set; }
     }
 }

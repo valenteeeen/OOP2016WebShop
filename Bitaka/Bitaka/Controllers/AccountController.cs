@@ -78,7 +78,7 @@ namespace Bitaka.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, FullName =model.FullName, BirthDate = model.BirthDate, Address = model.Address, Phone =model.Phone };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

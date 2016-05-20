@@ -172,6 +172,14 @@
     <Compile Include="Migrations\201605191555312_AddedProducts.Designer.cs">
       <DependentUpon>201605191555312_AddedProducts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605201009397_AddEmail.cs" />
+    <Compile Include="Migrations\201605201009397_AddEmail.Designer.cs">
+      <DependentUpon>201605201009397_AddEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605201049461_AddPhone.cs" />
+    <Compile Include="Migrations\201605201049461_AddPhone.Designer.cs">
+      <DependentUpon>201605201049461_AddPhone.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -247,6 +255,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605191555312_AddedProducts.resx">
       <DependentUpon>201605191555312_AddedProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605201009397_AddEmail.resx">
+      <DependentUpon>201605201009397_AddEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605201049461_AddPhone.resx">
+      <DependentUpon>201605201049461_AddPhone.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
