@@ -9,11 +9,22 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "AllProducts", FormMethod.Get))
 {
     <p>
-        Търсене по име на продукт: @Html.TextBox("SearchString") <br />
-        <input type="submit" value="Filter" />
+        Търсене на продукт: @Html.TextBox("SearchString")
+
+        <br />
+        <input type="submit" value="Търсене" />
+        <select name="cat">
+            <option value="all">----------</option>
+            <option value="fashion">Fashion</option>
+            <option value="electronics">Electronics</option>
+            <option value="vehicles">Vehicles</option>
+            <option value="animals">Animals</option>
+            <option value="babies">Babies</option>
+            <option value="home">Home</option>
+        </select>
     </p>
 }
 
@@ -24,7 +35,7 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.Price, SearchString = ViewBag.SearchString })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -36,7 +47,7 @@
             @Html.DisplayNameFor(model => model.Used)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.Date, SearchString = ViewBag.SearchString })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Image)

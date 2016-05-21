@@ -15,19 +15,53 @@ namespace Bitaka.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: /AllProducts/
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchString, string sortOrder, string cat)
         {
             var products = from m in db.Products
                          select m;
 
+            // ViewBag
+            ViewBag.searchString = searchString;
+            ViewBag.cat = cat;
+            ViewBag.Price = sortOrder == "price" ? "price_desc" : "price";
+            ViewBag.Date = sortOrder == "date" ? "date_desc" : "date";
+
+            // Search
             if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(s => (s.Name.Contains(searchString) && s.Description.Contains(searchString)) || (s.Name.Contains(searchString) || s.Description.Contains(searchString)));
-                return View(products); 
+                //return View(products.ToList());
+            }
 
+            // Sort
+            switch (sortOrder)
+            {
+                case "price":
+                    products = products.OrderBy(m => m.Price);
+                    break;
+                case "price_desc":
+                    products = products.OrderByDescending(m => m.Price);
+                    break;
+                case "date":
+                    products = products.OrderBy(m => m.Created);
+                    break;
+                case "date_desc":
+                    products = products.OrderByDescending(m => m.Created);
+                    break;
+                default:
+                    products = products.OrderBy(m => m.Created);
+                    break;
+            }
+
+            // Cat
+            if (cat != null && cat != "all")
+            {
+                products = products.Where(s => s.Category.Contains(cat));
             }
  
-            return View(db.Products.ToList());
+
+
+            return View(products.ToList());
         }
 
         
