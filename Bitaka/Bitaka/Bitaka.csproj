@@ -249,10 +249,6 @@
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\AllProducts\Create.cshtml" />
-    <Content Include="Views\AllProducts\Delete.cshtml" />
-    <Content Include="Views\AllProducts\Details.cshtml" />
-    <Content Include="Views\AllProducts\Edit.cshtml" />
     <Content Include="Views\AllProducts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
