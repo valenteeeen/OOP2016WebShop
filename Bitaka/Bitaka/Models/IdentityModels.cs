@@ -23,5 +23,6 @@ namespace Bitaka.Models
         {
         }
         public virtual DbSet<Products> Products { get; set; }
+        
     }
 }

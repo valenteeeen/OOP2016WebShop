@@ -27,6 +27,8 @@ namespace Bitaka.Controllers
             return View(contactsByUserId.ToList());
         }
 
+
+
         // GET: /Products/Details/5
         public ActionResult Details(int? id)
         {
@@ -35,6 +37,7 @@ namespace Bitaka.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Products products = db.Products.Find(id);
+           
             if (products == null)
             {
                 return HttpNotFound();
@@ -53,10 +56,12 @@ namespace Bitaka.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="id,Name,Price,Description,Category,Used,Created,Image")] Products products)
+        public ActionResult Create([Bind(Include = "id,Name,Price,Description,Category,Used,Created,Image,file")] Products products)
         {
             if (ModelState.IsValid)
             {
+                
+
                 var id = User.Identity.GetUserId();
                 products.ApplicationUser = db.Users.Find(id);
 
