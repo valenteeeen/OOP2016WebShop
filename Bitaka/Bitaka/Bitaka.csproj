@@ -181,10 +181,6 @@
     <Compile Include="Migrations\201605201049461_AddPhone.Designer.cs">
       <DependentUpon>201605201049461_AddPhone.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605291351041_ApplicationUser.cs" />
-    <Compile Include="Migrations\201605291351041_ApplicationUser.Designer.cs">
-      <DependentUpon>201605291351041_ApplicationUser.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201605291409568_AddApplicationUserProducts.cs" />
     <Compile Include="Migrations\201605291409568_AddApplicationUserProducts.Designer.cs">
       <DependentUpon>201605291409568_AddApplicationUserProducts.cs</DependentUpon>
@@ -199,7 +195,6 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -274,9 +269,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605201049461_AddPhone.resx">
       <DependentUpon>201605201049461_AddPhone.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605291351041_ApplicationUser.resx">
-      <DependentUpon>201605291351041_ApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605291409568_AddApplicationUserProducts.resx">
       <DependentUpon>201605291409568_AddApplicationUserProducts.cs</DependentUpon>

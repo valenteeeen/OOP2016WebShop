@@ -4,17 +4,15 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Products</h2>
 
-
-@using (Html.BeginForm("Index", "AllProducts", FormMethod.Get))
+<br />
+@using (Html.BeginForm("Index", "AllProducts", FormMethod.Get,new { @class = "form-inline" }))
 {
     <p>
-        Търсене на продукт: @Html.TextBox("SearchString")
-
-        <br />
-        <input type="submit" value="Търсене" />
-        <select name="cat">
+        Търсене на продукт: @Html.TextBox("SearchString", null, new { @class = "form-control" })
+        
+        <select name="cat" class="form-control" style="width:225px; display:inline-block;">
             <option value="all">----------</option>
             <option value="fashion">Fashion</option>
             <option value="electronics">Electronics</option>
@@ -23,9 +21,9 @@
             <option value="babies">Babies</option>
             <option value="home">Home</option>
         </select>
+        <input type="submit" value="Търсене" class="btn btn-info" />
     </p>
 }
-
 
 <table class="table">
     <tr>
