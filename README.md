@@ -1,7 +1,6 @@
-
-
 # Bitaka
 ### WebShop For All
+
 
 ## Description
 
@@ -32,9 +31,5 @@ which filters products based on their name and description. It's possible for yo
 * **:mouse: [SissYo]** (https://github.com/SissYo)
 * **:frog: [Barcafan95]** (https://github.com/Barcafan95)
 * **:cat: [megayra]** (https://github.com/megayra)
-
-
-
-
 
 
