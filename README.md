@@ -1,3 +1,6 @@
+
+<img src="Bitaka/Bitaka/Pictures/banner-shop.gif">
+
 # Bitaka
 ### WebShop For All
 
