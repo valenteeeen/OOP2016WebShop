@@ -10,10 +10,10 @@
 @using (Html.BeginForm("Index", "AllProducts", FormMethod.Get))
 {
     <p>
-        Търсене на продукт: @Html.TextBox("SearchString")
+        Search: @Html.TextBox("SearchString")
 
         <br />
-        <input type="submit" value="Търсене" />
+        <input type="submit" value="Search" />
         <select name="cat">
             <option value="all">----------</option>
             <option value="fashion">Fashion</option>
@@ -75,6 +75,11 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Image)
+        </td>
+        <td>
+            
+            @Html.ActionLink("Details", "Details", new { id = item.id }) 
+           
         </td>
         
     </tr>
