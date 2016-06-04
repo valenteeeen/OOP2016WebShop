@@ -315,6 +315,66 @@ namespace Bitaka.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
+        // GET: /Account/AccountSettings
+        public ActionResult AccountSettings(bool? savedSuccesfully)
+        {
+            
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            ViewBag.ErrorMessage = "";
+
+            
+            AccountSettingsViewModel model = new AccountSettingsViewModel { Email = user.Email, FullName = user.FullName, Address = user.Address, Phone = user.Phone };
+
+
+            //the section below defines what happens on the form
+            ViewBag.showForm = true;
+            if (savedSuccesfully != null && savedSuccesfully == true)
+            {
+                ViewBag.showForm = false;
+                ViewBag.StatusMessage = "Data saved sucessfully";
+            }
+            else if (savedSuccesfully != null && savedSuccesfully == false)
+            {
+                ViewBag.showForm = false;
+                ViewBag.ErrorMessage = "Something went wrong!";
+            }
+
+            return View(model);
+        }
+
+
+        //
+        // POST: /Account/AccountSettings
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<ActionResult> AccountSettings(AccountSettingsViewModel model)
+        {
+
+            ViewBag.ReturnUrl = Url.Action("AccountSettings");
+
+            if (ModelState.IsValid)
+            {
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                user.Email = model.Email;
+                user.FullName = model.FullName;
+                user.Address = model.Address;
+                user.Phone = model.Phone;
+
+
+                IdentityResult result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    
+                    return RedirectToAction("AccountSettings", new { savedSuccesfully = true });
+                }
+
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
 
         //
         // POST: /Account/LogOff
