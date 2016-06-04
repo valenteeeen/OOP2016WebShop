@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Bitaka.Models;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Bitaka.Controllers
 {
@@ -34,6 +35,7 @@ namespace Bitaka.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
+
         }
 
         //
@@ -56,7 +58,7 @@ namespace Bitaka.Controllers
                     ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -78,7 +80,7 @@ namespace Bitaka.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, FullName =model.FullName, Address = model.Address, Phone =model.Phone };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, FullName =model.FullName,Address = model.Address, Phone =model.Phone };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -187,6 +189,7 @@ namespace Bitaka.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            ControllerContext.HttpContext.Session.RemoveAll();
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
@@ -196,14 +199,23 @@ namespace Bitaka.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+            var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+            if (result == null || result.Identity == null)
             {
                 return RedirectToAction("Login");
             }
 
+            var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+            if (idClaim == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var login = new UserLoginInfo(idClaim.Issuer, idClaim.Value);
+            var name = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", "");
+
             // Sign in the user with this external login provider if the user already has a login
-            var user = await UserManager.FindAsync(loginInfo.Login);
+            var user = await UserManager.FindAsync(login);
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
@@ -213,9 +225,29 @@ namespace Bitaka.Controllers
             {
                 // If the user does not have an account, then prompt the user to create an account
                 ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
+                ViewBag.LoginProvider = login.LoginProvider;
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = name });
             }
+        }
+        private async Task<ExternalLoginInfo> AuthenticationManager_GetExternalLoginInfoAsync_Workaround()
+        {
+            ExternalLoginInfo loginInfo = null;
+
+            var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (result != null && result.Identity != null)
+            {
+                var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+                if (idClaim != null)
+                {
+                    loginInfo = new ExternalLoginInfo()
+                    {
+                        DefaultUserName = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", ""),
+                        Login = new UserLoginInfo(idClaim.Issuer, idClaim.Value)
+                    };
+                }
+            }
+            return loginInfo;
         }
 
         //
@@ -224,6 +256,7 @@ namespace Bitaka.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
+            ControllerContext.HttpContext.Session.RemoveAll();
             // Request a redirect to the external login provider to link a login for the current user
             return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
         }
@@ -280,73 +313,6 @@ namespace Bitaka.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
-        // GET: /Account/AccountSettings
-        //this action is used to display form with data filled in initially.
-        //And also for returning from saving action
-        //this is why we have nullable savedSuccessfully parameter here.
-        //savedSuccesfully will be tru or false, when redirected from Post AccountSettings action
-        public ActionResult AccountSettings(bool? savedSuccesfully)
-        {
-            //fist, we need to find the logged in user data
-            var user = UserManager.FindById(User.Identity.GetUserId());
-
-            ViewBag.ErrorMessage = "";
-
-            //then create AccountSettingsViewModel with data filled in.
-            //notice that we use user object initialized before
-            AccountSettingsViewModel model = new AccountSettingsViewModel { Email = user.Email, FullName = user.FullName, Address = user.Address, Phone = user.Phone };
-
-
-            //the section below defines what happens on the form
-            ViewBag.showForm = true;
-            if (savedSuccesfully != null && savedSuccesfully == true)
-            {
-                ViewBag.showForm = false;
-                ViewBag.StatusMessage = "Data saved sucessfully";
-            }
-            else if (savedSuccesfully != null && savedSuccesfully == false)
-            {
-                ViewBag.showForm = false;
-                ViewBag.ErrorMessage = "Something went wrong!";
-            }
-
-            return View(model);
-        }
-
-
-        //
-        // POST: /Account/AccountSettings
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        //this action is called when user attempts to save data
-        //therefore it receives AccountSettingsViewModel object
-        public async Task<ActionResult> AccountSettings(AccountSettingsViewModel model)
-        {
-
-            ViewBag.ReturnUrl = Url.Action("AccountSettings");
-
-            if (ModelState.IsValid)
-            {
-                var user = UserManager.FindById(User.Identity.GetUserId());
-                user.Email = model.Email;
-                user.FullName = model.FullName;
-                user.Address = model.Address;
-                user.Phone = model.Phone;
-
-
-                IdentityResult result = await UserManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    //if everything is validated and saved successfully,
-                    //we will be redirected to AccountSettings GET action
-                    //where success message will be displayed, but form will be hidden
-                    return RedirectToAction("AccountSettings", new { savedSuccesfully = true });
-                }
-
-            }
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -445,7 +411,8 @@ namespace Bitaka.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 
@@ -462,6 +429,9 @@ namespace Bitaka.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
+                // this line fixed the problem with returing null
+                context.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
+
                 var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
