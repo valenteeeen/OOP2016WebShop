@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.Price, SearchString = ViewBag.SearchString })
+            @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.Price, SearchString = ViewBag.SearchString, cat = ViewBag.cat })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -45,7 +45,7 @@
             @Html.DisplayNameFor(model => model.Used)
         </th>
         <th>
-            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.Date, SearchString = ViewBag.SearchString })
+            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.Date, SearchString = ViewBag.SearchString, cat = ViewBag.cat })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Image)

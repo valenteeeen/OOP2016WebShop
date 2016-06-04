@@ -37,7 +37,9 @@ namespace Bitaka
                appId: "868993459897111",
             appSecret: "74ef81af39f1db50a10fef02d4eb610b");
 
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication(
+                clientId: "847826063844-j7sfrl7v3m5oessvd8o9rpmi6of32knu.apps.googleusercontent.com",
+                clientSecret: "K_ow6h1ech-ttrh5Na0Jxe3A");
         }
     }
 }
