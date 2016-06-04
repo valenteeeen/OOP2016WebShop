@@ -165,25 +165,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605191551044_InitialCreate.cs" />
-    <Compile Include="Migrations\201605191551044_InitialCreate.Designer.cs">
-      <DependentUpon>201605191551044_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605191555312_AddedProducts.cs" />
-    <Compile Include="Migrations\201605191555312_AddedProducts.Designer.cs">
-      <DependentUpon>201605191555312_AddedProducts.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605201009397_AddEmail.cs" />
-    <Compile Include="Migrations\201605201009397_AddEmail.Designer.cs">
-      <DependentUpon>201605201009397_AddEmail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605201049461_AddPhone.cs" />
-    <Compile Include="Migrations\201605201049461_AddPhone.Designer.cs">
-      <DependentUpon>201605201049461_AddPhone.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605291409568_AddApplicationUserProducts.cs" />
-    <Compile Include="Migrations\201605291409568_AddApplicationUserProducts.Designer.cs">
-      <DependentUpon>201605291409568_AddApplicationUserProducts.cs</DependentUpon>
+    <Compile Include="Migrations\201606041745584_Products.cs" />
+    <Compile Include="Migrations\201606041745584_Products.Designer.cs">
+      <DependentUpon>201606041745584_Products.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -259,20 +243,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605191551044_InitialCreate.resx">
-      <DependentUpon>201605191551044_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605191555312_AddedProducts.resx">
-      <DependentUpon>201605191555312_AddedProducts.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605201009397_AddEmail.resx">
-      <DependentUpon>201605201009397_AddEmail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605201049461_AddPhone.resx">
-      <DependentUpon>201605201049461_AddPhone.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605291409568_AddApplicationUserProducts.resx">
-      <DependentUpon>201605291409568_AddApplicationUserProducts.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606041745584_Products.resx">
+      <DependentUpon>201606041745584_Products.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

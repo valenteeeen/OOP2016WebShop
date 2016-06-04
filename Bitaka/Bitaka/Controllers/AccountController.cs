@@ -78,7 +78,7 @@ namespace Bitaka.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, FullName =model.FullName, BirthDate = model.BirthDate, Address = model.Address, Phone =model.Phone };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, FullName =model.FullName, Address = model.Address, Phone =model.Phone };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -280,6 +280,73 @@ namespace Bitaka.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
+            return View(model);
+        }
+        // GET: /Account/AccountSettings
+        //this action is used to display form with data filled in initially.
+        //And also for returning from saving action
+        //this is why we have nullable savedSuccessfully parameter here.
+        //savedSuccesfully will be tru or false, when redirected from Post AccountSettings action
+        public ActionResult AccountSettings(bool? savedSuccesfully)
+        {
+            //fist, we need to find the logged in user data
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            ViewBag.ErrorMessage = "";
+
+            //then create AccountSettingsViewModel with data filled in.
+            //notice that we use user object initialized before
+            AccountSettingsViewModel model = new AccountSettingsViewModel { Email = user.Email, FullName = user.FullName, Address = user.Address, Phone = user.Phone };
+
+
+            //the section below defines what happens on the form
+            ViewBag.showForm = true;
+            if (savedSuccesfully != null && savedSuccesfully == true)
+            {
+                ViewBag.showForm = false;
+                ViewBag.StatusMessage = "Data saved sucessfully";
+            }
+            else if (savedSuccesfully != null && savedSuccesfully == false)
+            {
+                ViewBag.showForm = false;
+                ViewBag.ErrorMessage = "Something went wrong!";
+            }
+
+            return View(model);
+        }
+
+
+        //
+        // POST: /Account/AccountSettings
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //this action is called when user attempts to save data
+        //therefore it receives AccountSettingsViewModel object
+        public async Task<ActionResult> AccountSettings(AccountSettingsViewModel model)
+        {
+
+            ViewBag.ReturnUrl = Url.Action("AccountSettings");
+
+            if (ModelState.IsValid)
+            {
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                user.Email = model.Email;
+                user.FullName = model.FullName;
+                user.Address = model.Address;
+                user.Phone = model.Phone;
+
+
+                IdentityResult result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    //if everything is validated and saved successfully,
+                    //we will be redirected to AccountSettings GET action
+                    //where success message will be displayed, but form will be hidden
+                    return RedirectToAction("AccountSettings", new { savedSuccesfully = true });
+                }
+
+            }
+            // If we got this far, something failed, redisplay form
             return View(model);
         }
 

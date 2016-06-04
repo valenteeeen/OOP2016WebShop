@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bitaka.Models
 {
@@ -9,8 +10,8 @@ namespace Bitaka.Models
     public class ApplicationUser : IdentityUser
     {
         public string Email { get; set; }
+        [Display(Name = "Full Name")]
         public string FullName { get; set; }
-        public DateTime BirthDate { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public virtual ICollection<Products> Products { get; set; }

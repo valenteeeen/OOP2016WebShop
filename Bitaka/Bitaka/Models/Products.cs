@@ -27,12 +27,11 @@ namespace Bitaka.Models
             {
                 return (_createdOn == DateTime.MinValue) ? DateTime.Now : _createdOn;
             }
-            set { _createdOn = value; }
+            set { _createdOn = value; } 
         }
       
         public  string Image { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-       
     }
 }

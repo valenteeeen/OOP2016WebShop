@@ -28,6 +28,24 @@ namespace Bitaka.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    public class AccountSettingsViewModel
+    {
+        [Required]
+        [Display(Name = "E-mail")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Display(Name = "Your Name")]
+        public string FullName { get; set; }
+        [Display(Name = "Address")]
+        [DataType(DataType.MultilineText)]
+        public string Address { get; set; }
+
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        public string Phone { get; set; }
+
+    }
 
     public class LoginViewModel
     {
@@ -68,11 +86,6 @@ namespace Bitaka.Models
 
         [Display(Name = "Your Name")]
         public string FullName { get; set; }
-
-        [Display(Name="Birth Date")]
-        [DataType(DataType.Date)]
-        
-        public DateTime BirthDate { get; set; } 
         
         [Display(Name="Address")]
         [DataType(DataType.MultilineText)]

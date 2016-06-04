@@ -42,6 +42,7 @@ namespace Bitaka.Controllers
             {
                 return HttpNotFound();
             }
+       
             return View(products);
         }
 
@@ -58,18 +59,18 @@ namespace Bitaka.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,Name,Price,Description,Category,Used,Created,Image,file")] Products products)
         {
+
             if (ModelState.IsValid)
             {
-                
-
                 var id = User.Identity.GetUserId();
                 products.ApplicationUser = db.Users.Find(id);
-
+                
+               
                 db.Products.Add(products);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
 
+            }
             return View(products);
         }
 
