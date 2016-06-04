@@ -1,20 +1,18 @@
 ﻿@model IEnumerable<Bitaka.Models.Products>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Products";
 }
 
-<h2>Index</h2>
+<h2>Products</h2>
 
-
-@using (Html.BeginForm("Index", "AllProducts", FormMethod.Get))
+<br/>
+@using (Html.BeginForm("Index", "AllProducts", FormMethod.Get, new { @class = "form-inline" }))
 {
     <p>
-        Search: @Html.TextBox("SearchString")
+        Search: @Html.TextBox("SearchString", null, new { @class = "form-control" })
 
-        <br />
-        <input type="submit" value="Search" />
-        <select name="cat">
+        <select name="cat" class="form-control" style="width:225px; display:inline-block;">
             <option value="all">----------</option>
             <option value="fashion">Fashion</option>
             <option value="electronics">Electronics</option>
@@ -23,6 +21,7 @@
             <option value="babies">Babies</option>
             <option value="home">Home</option>
         </select>
+        <input type="submit" value="Search" class="btn btn-info" />
     </p>
 }
 
