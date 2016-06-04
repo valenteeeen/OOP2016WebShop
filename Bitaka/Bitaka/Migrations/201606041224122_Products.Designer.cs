@@ -7,13 +7,13 @@ namespace Bitaka.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.0-20911")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class Products : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Products));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605191551044_InitialCreate"; }
+            get { return "201606041224122_Products"; }
         }
         
         string IMigrationMetadata.Source

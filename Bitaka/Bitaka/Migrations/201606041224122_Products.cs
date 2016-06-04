@@ -3,7 +3,7 @@ namespace Bitaka.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Products : DbMigration
     {
         public override void Up()
         {
@@ -33,6 +33,10 @@ namespace Bitaka.Migrations
                         UserName = c.String(),
                         PasswordHash = c.String(),
                         SecurityStamp = c.String(),
+                        Email = c.String(),
+                        FullName = c.String(),
+                        Address = c.String(),
+                        Phone = c.String(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id);
