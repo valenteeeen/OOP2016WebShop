@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Bitaka.Models;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Bitaka.Controllers
 {
@@ -34,6 +35,7 @@ namespace Bitaka.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
+
         }
 
         //
@@ -56,7 +58,7 @@ namespace Bitaka.Controllers
                     ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -187,6 +189,7 @@ namespace Bitaka.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            ControllerContext.HttpContext.Session.RemoveAll();
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
@@ -196,14 +199,23 @@ namespace Bitaka.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+            var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+            if (result == null || result.Identity == null)
             {
                 return RedirectToAction("Login");
             }
 
+            var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+            if (idClaim == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var login = new UserLoginInfo(idClaim.Issuer, idClaim.Value);
+            var name = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", "");
+
             // Sign in the user with this external login provider if the user already has a login
-            var user = await UserManager.FindAsync(loginInfo.Login);
+            var user = await UserManager.FindAsync(login);
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
@@ -213,9 +225,29 @@ namespace Bitaka.Controllers
             {
                 // If the user does not have an account, then prompt the user to create an account
                 ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
+                ViewBag.LoginProvider = login.LoginProvider;
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = name });
             }
+        }
+        private async Task<ExternalLoginInfo> AuthenticationManager_GetExternalLoginInfoAsync_Workaround()
+        {
+            ExternalLoginInfo loginInfo = null;
+
+            var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (result != null && result.Identity != null)
+            {
+                var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+                if (idClaim != null)
+                {
+                    loginInfo = new ExternalLoginInfo()
+                    {
+                        DefaultUserName = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", ""),
+                        Login = new UserLoginInfo(idClaim.Issuer, idClaim.Value)
+                    };
+                }
+            }
+            return loginInfo;
         }
 
         //
@@ -224,6 +256,7 @@ namespace Bitaka.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
+            ControllerContext.HttpContext.Session.RemoveAll();
             // Request a redirect to the external login provider to link a login for the current user
             return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
         }
@@ -378,7 +411,8 @@ namespace Bitaka.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 
@@ -395,6 +429,9 @@ namespace Bitaka.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
+                // this line fixed the problem with returing null
+                context.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
+
                 var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
