@@ -7,7 +7,7 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a>Hello @User.Identity.GetUserName() !</a>
+                <a>Hello @User.Identity.GetUserName()</a>
             </li>
             <li>
                 @Html.ActionLink("Settings", "AccountSettings", "Account", routeValues: null, htmlAttributes: new { title = "Settings" })
