@@ -234,6 +234,7 @@
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\AllProducts\Index.cshtml" />
     <Content Include="Views\AllProducts\Details.cshtml" />
+    <Content Include="Views\Account\AccountSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -42,7 +42,9 @@
         <div class="form-group">
                 @Html.LabelFor(model => model.Category, new { @class = "control-label col-md-2" })
                @{var listItems = new List<System.Web.UI.WebControls.ListItem>
-    {
+                 
+    
+                 {
  
            new System.Web.UI.WebControls.ListItem { Text = "Fashion", Value="Fashion" },
           new System.Web.UI.WebControls.ListItem { Text = "Electronics", Value="Electronics" },
@@ -52,8 +54,9 @@
           new System.Web.UI.WebControls.ListItem { Text = "Home", Value="Home" }
  
  
-    };
- 
+   
+          };
+
  
  
  }
