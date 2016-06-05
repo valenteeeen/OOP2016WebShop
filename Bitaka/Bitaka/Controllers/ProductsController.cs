@@ -57,11 +57,17 @@ namespace Bitaka.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,Name,Price,Description,Category,Used,Created,Image,file")] Products products)
+        public ActionResult Create([Bind(Include = "id,Name,Price,Description,Category,Used,Created,Image,file")] Products products, HttpPostedFileBase file)
         {
 
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    file.SaveAs(HttpContext.Server.MapPath("~/Images/")
+                                                          + file.FileName);
+                    products.Image = file.FileName;
+                }
                 var id = User.Identity.GetUserId();
                 products.ApplicationUser = db.Users.Find(id);
                 
@@ -69,7 +75,6 @@ namespace Bitaka.Controllers
                 db.Products.Add(products);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-
             }
             return View(products);
         }
