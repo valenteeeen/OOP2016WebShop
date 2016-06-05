@@ -68,9 +68,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Image)
-                @Html.ValidationMessageFor(model => model.Image)
-                <br/>
                 <input id="Image" title="Upload a product image"
                        type="file" name="file" />
             </div>
