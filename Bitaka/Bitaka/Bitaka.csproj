@@ -188,6 +188,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Pictures\banner-shop.gif" />
+    <Content Include="Pictures\funny-monkey_3413155a-large.jpg" />
+    <Content Include="Pictures\ombre-fringe-skirt.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
