@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Bitaka.Models;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace Bitaka.Controllers
 {
@@ -15,7 +17,7 @@ namespace Bitaka.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: /AllProducts/
-        public ActionResult Index(string searchString, string sortOrder, string cat)
+        public ActionResult Index( string searchString, string sortOrder, string cat)
         {
             var products = from m in db.Products
                          select m;
@@ -58,7 +60,7 @@ namespace Bitaka.Controllers
             {
                 products = products.Where(s => s.Category.Contains(cat));
             }
- 
+           
 
 
             return View(products.ToList());
@@ -102,7 +104,23 @@ namespace Bitaka.Controllers
             }
 
             return View(products);
+        
+       }
+        public ActionResult Add()
+        {
+            List<Products> all = new List<Products>();
+            foreach(var el in db.Products)
+            {
+                all.Add(el);
+
+            }
+            return RedirectToAction("Index", "ShoppingCarts", all.ToList() );
         }
+       
+
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
 
         // GET: /AllProducts/Edit/5
         public ActionResult Edit(int? id)

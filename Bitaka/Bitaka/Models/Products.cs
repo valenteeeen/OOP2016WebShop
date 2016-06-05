@@ -18,6 +18,7 @@ namespace Bitaka.Models
         private DateTime created = DateTime.Now;
         public DateTime Created { get { return created; } set { created = value; } }
         public  string Image { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; } 
+        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ShoppingCart ShoppingCart { get; set; }
     }
 }

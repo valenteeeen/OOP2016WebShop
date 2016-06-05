@@ -7,13 +7,13 @@ namespace Bitaka.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.0-20911")]
-    public sealed partial class AddEmail : IMigrationMetadata
+    public sealed partial class Products : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddEmail));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Products));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605201009397_AddEmail"; }
+            get { return "201606041252510_Products"; }
         }
         
         string IMigrationMetadata.Source

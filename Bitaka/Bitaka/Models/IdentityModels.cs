@@ -14,6 +14,7 @@ namespace Bitaka.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public virtual ICollection<Products> Products { get; set; }
+        public virtual ShoppingCart ShopingCart { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -23,5 +24,10 @@ namespace Bitaka.Models
         {
         }
         public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+
+
+        public System.Collections.IEnumerable IdentityUsers { get; set; }
     }
 }

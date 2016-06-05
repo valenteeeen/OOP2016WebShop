@@ -20,9 +20,7 @@ namespace Bitaka.Controllers
         // GET: /Products/
         public ActionResult Index()
         {
-            
-
-            var id = User.Identity.GetUserId();          
+             var id = User.Identity.GetUserId();          
             var contactsByUserId = db.Products.Where(c => c.ApplicationUser.Id == id);
             return View(contactsByUserId.ToList());
         }
@@ -59,7 +57,6 @@ namespace Bitaka.Controllers
             {
                 var id = User.Identity.GetUserId();
                 products.ApplicationUser = db.Users.Find(id);
-
                 db.Products.Add(products);
                 db.SaveChanges();
                 return RedirectToAction("Index");

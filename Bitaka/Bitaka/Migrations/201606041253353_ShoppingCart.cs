@@ -3,7 +3,7 @@ namespace Bitaka.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddedProducts : DbMigration
+    public partial class ShoppingCart : DbMigration
     {
         public override void Up()
         {
