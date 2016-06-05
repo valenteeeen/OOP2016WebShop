@@ -27,5 +27,8 @@ namespace Bitaka.Models
         {
         }
         public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+        public System.Collections.IEnumerable IdentityUsers { get; set; }
     }
 }
