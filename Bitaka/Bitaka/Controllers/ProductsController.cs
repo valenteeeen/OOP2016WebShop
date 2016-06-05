@@ -20,10 +20,12 @@ namespace Bitaka.Controllers
         // GET: /Products/
         public ActionResult Index()
         {
-             var id = User.Identity.GetUserId();          
+            var id = User.Identity.GetUserId();          
             var contactsByUserId = db.Products.Where(c => c.ApplicationUser.Id == id);
             return View(contactsByUserId.ToList());
         }
+
+
 
         // GET: /Products/Details/5
         public ActionResult Details(int? id)
@@ -33,10 +35,12 @@ namespace Bitaka.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Products products = db.Products.Find(id);
+           
             if (products == null)
             {
                 return HttpNotFound();
             }
+       
             return View(products);
         }
 
@@ -51,17 +55,24 @@ namespace Bitaka.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="id,Name,Price,Description,Category,Used,Created,Image")] Products products)
+        public ActionResult Create([Bind(Include = "id,Name,Price,Description,Category,Used,Created,Image,file")] Products products, HttpPostedFileBase file)
         {
+
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    file.SaveAs(HttpContext.Server.MapPath("~/Pictures/")
+                                                          + file.FileName);
+                    products.Image = file.FileName;
+                }
                 var id = User.Identity.GetUserId();
                 products.ApplicationUser = db.Users.Find(id);
+
                 db.Products.Add(products);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(products);
         }
 
@@ -85,10 +96,17 @@ namespace Bitaka.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="id,Name,Price,Description,Category,Used,Created,Image")] Products products)
+        public ActionResult Edit([Bind(Include = "id,Name,Price,Description,Category,Used,Created,Image,file")] Products products, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    file.SaveAs(HttpContext.Server.MapPath("~/Pictures/")
+                                                          + file.FileName);
+                    products.Image = file.FileName;
+                }
+
                 db.Entry(products).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

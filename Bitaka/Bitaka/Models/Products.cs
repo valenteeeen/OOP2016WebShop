@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,10 +16,21 @@ namespace Bitaka.Models
         public string Category { get; set; }
         public bool Used { get; set; }
 
-        private DateTime created = DateTime.Now;
-        public DateTime Created { get { return created; } set { created = value; } }
+        private DateTime _createdOn = DateTime.MinValue;
+        //public DateTime CreatedOn;
+        [Display(Name = "Created")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime Created
+        {
+            get
+            {
+                return (_createdOn == DateTime.MinValue) ? DateTime.Now : _createdOn;
+            }
+            set { _createdOn = value; } 
+        }
+      
         public  string Image { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual ShoppingCart ShoppingCart { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; } 
     }
 }
