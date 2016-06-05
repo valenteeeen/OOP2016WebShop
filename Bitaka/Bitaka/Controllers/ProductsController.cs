@@ -64,7 +64,7 @@ namespace Bitaka.Controllers
             {
                 if (file != null)
                 {
-                    file.SaveAs(HttpContext.Server.MapPath("~/Images/")
+                    file.SaveAs(HttpContext.Server.MapPath("~/Pictures/")
                                                           + file.FileName);
                     products.Image = file.FileName;
                 }
@@ -105,7 +105,7 @@ namespace Bitaka.Controllers
             {
                 if (file != null)
                 {
-                    file.SaveAs(HttpContext.Server.MapPath("~/Images/")
+                    file.SaveAs(HttpContext.Server.MapPath("~/Pictures/")
                                                           + file.FileName);
                     products.Image = file.FileName;
                 }
