@@ -1,0 +1,92 @@
+﻿@model Bitaka.Models.Products
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm("Create", "Products", null, FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Products</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price)
+                @Html.ValidationMessageFor(model => model.Price)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+                @Html.LabelFor(model => model.Category, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{var listItems = new List<System.Web.UI.WebControls.ListItem>
+                   {
+                       new System.Web.UI.WebControls.ListItem { Text = "Fashion", Value="Fashion" },
+                       new System.Web.UI.WebControls.ListItem { Text = "Electronics", Value="Electronics" },
+                       new System.Web.UI.WebControls.ListItem { Text = "Vehicles", Value="Vehicles" },
+                       new System.Web.UI.WebControls.ListItem { Text = "Animals", Value="Animals" },
+                       new System.Web.UI.WebControls.ListItem { Text = "Babies", Value="Babies" },
+                       new System.Web.UI.WebControls.ListItem { Text = "Home", Value="Home" }
+                   };
+                }
+                @Html.DropDownListFor(model => model.Category, new SelectList(listItems, "Value", "Text"))
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Used, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Used)
+                @Html.ValidationMessageFor(model => model.Used)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="Image" title="Upload a product image"
+                       type="file" name="file" />
+            </div>
+        </div>
+       
+       
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-info" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

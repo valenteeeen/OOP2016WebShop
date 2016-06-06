@@ -1,0 +1,10 @@
+﻿body {
+  
+}
+.jumbotron {
+    height:270px;
+    margin-top:20px;
+    background-image:url('../Pictures/banner-shop.gif'); 
+    background-size:100% 100%;
+    background-repeat:no-repeat;
+}
